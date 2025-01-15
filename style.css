@@ -31,19 +31,7 @@ body {
     white-space: nowrap;
     text-wrap: wrap;
 }
-#generate-cards {
-    background-color: beige;
-    display: block;
-    margin: 0 auto;
-    margin-top: 50px;
-    /* height: 50px;
-    width: 100px; */
-    font-size: 1rem;
-    padding: 10px;
-    white-space: normal;
-    text-wrap: wrap;
 
-}
 #card_Image {
     height: 200px;
     width: 150px;
@@ -52,6 +40,10 @@ body {
     margin-right: auto;
     margin-top: 20px;
     padding-bottom: 20px;
+    visibility: hidden;
+}
+#card_Image[data-loaded="true"] {
+    visibility: visible;
 }
 #four-images {
     display: flex;
@@ -67,5 +59,10 @@ body {
     height: auto;
     margin-top: 20px;
     object-fit: contain;
+    visibility: hidden;
 }
+#four-images img[data-loaded="true"] {
+    visibility: visible;
+}
+
   

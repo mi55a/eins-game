@@ -60,45 +60,50 @@ const cardImages = [
 ];
 
 function randomCard(elementID) {
-    // const randomIndex = Math.floor(Math.random() * cardImages.length);
-    // const imagePath = cardImages[randomIndex].src;
     const element = document.getElementById(elementID);
 
     if(element.tagName === 'IMG') {
         const randomIndex = Math.floor(Math.random() * cardImages.length);
         const imagePath = cardImages[randomIndex].src;
         element.src = imagePath;
+        element.setAttribute('data-loaded', 'true');
     } else if (element.tagName === 'DIV') {
         const images = element.getElementsByTagName('img');
         for(let i = 0;i < images.length;i++) {
             const randomIndex = Math.floor(Math.random() * cardImages.length);
             const imagePath = cardImages[randomIndex].src;
             images[i].src = imagePath;
+            images[i].setAttribute('data-loaded', 'true');
         }
     }
-    // console.log("It's working!!");
-
-    // for(let i = 0;i < images.length;i++) {
-    //     const randomIndex = Math.floor(Math.random() * cardImages.length);
-    //     const imagePath = cardImages[randomIndex].src;
-    //     images[i].src = imagePath;
-    // }
 
 }
-document.getElementById('draw-card').addEventListener('click', function() {
-    randomCard("card_Image");
-});
-
-document.getElementById('generate-cards').addEventListener('click', function() {
-    randomCard("four-images");
-});
-
 const backButton = document.getElementById('back-button');
 
-backButton.addEventListener('click', function() {
-    window.location.href = 'opening_screen.html';
-});
+if (backButton) {
+    backButton.addEventListener('click', function() {
+        window.location.href = 'opening_screen.html';
+    });
+}
 
+const startGameButton = document.getElementById('play-button');
+
+if(startGameButton) {
+    startGameButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        window.location.href = 'index.html';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname;
+
+    if(currentPage.includes('index.html')) {
+        randomCard("card_Image");
+        randomCard("four-images");
+    }
+})
 
 
 
