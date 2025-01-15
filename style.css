@@ -1,0 +1,57 @@
+body {
+    background-color: pink;
+}
+.header-title {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: auto;
+    text-align: center;
+    text-wrap: wrap;
+}
+#draw-card {
+    background-color: beige;
+    display: block;
+    margin: 0 auto;
+    margin-top: 50px;
+    height: 50px;
+    width: 100px;
+    font-size: 1rem;
+    padding: 10px;
+    white-space: nowrap;
+}
+#generate-cards {
+    background-color: beige;
+    display: block;
+    margin: 0 auto;
+    margin-top: 50px;
+    height: 50px;
+    width: 100px;
+    font-size: 1rem;
+    padding: 10px;
+    white-space: normal;
+
+}
+#card_Image {
+    height: 200px;
+    width: 150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+#four-images {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    padding-right: 20px;
+    align-items: center;
+    margin: 0 auto;
+    gap: 10px;
+}
+#four-images img {
+    width: 100px;
+    height: auto;
+    margin-top: 20px;
+    object-fit: contain;
+}
+  

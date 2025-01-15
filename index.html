@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eins Game</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- <script type="module" src="card_data.js"></script> -->
+    <script type="module" src="script.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="header-title">
+        <h1>WILLKOMMEN ZU EINS SPIELE</h1>
+      </div>
+    </header>
+    <main>
+      <div id="board">
+        <div id="controls">
+          <button id="draw-card">Draw card</button>
+          <!-- <button id="generate-cards">Generate card</button> -->
+        </div>
+        <div id="card-deck" class="card-stack"></div>
+        <div id="pile-discard" class="card-stack">
+          <img id="card_Image" src="" alt="Display card" />
+        </div>
+        <div id="player">
+          <!-- Cards are here-->
+          <button id="generate-cards">Generate card</button>
+          <div id="four-images">
+            <img src="" alt="First card" />
+            <img src="" alt="Second card" />
+            <img src="" alt="Third card" />
+            <img src="" alt="Fourth card" />
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
