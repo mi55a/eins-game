@@ -9,11 +9,11 @@ export type Card = {
 export type DeckType = Card[];
 
 export interface GameState {
-    players: { id: string; hand: Card[] }[];
+    players: { id: number; hand: Card[] }[];
     drawPile: Card[];
     discardPile: Card[];
     currentPlayerIndex: number;
     currentColor: colorType;
     currentFace: faceType;
-    direction: 1 | -1; // 1 for clockwise, -1 for counterclockwise
+    direction: 1 | -1;
   }
