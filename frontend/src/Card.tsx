@@ -1,4 +1,4 @@
-import { colorType, GameState, faceType, CardType } from "./types";
+import { colorType, GameState, faceType, CardType } from "../../logic/types";
 
 const colorToColor = {
     "blue": "blue",

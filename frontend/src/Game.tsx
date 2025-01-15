@@ -2,18 +2,22 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import Card from './Card'
-import { drawCardProduce, initializeGameState } from './gameLogic'
-import { CardType, colorType, DeckType, GameState } from './types'
+import { drawCardProduce, initializeGameState } from '../../logic/gameLogic'
+import { CardType, colorType, DeckType, GameState } from '../../logic/types'
 import Deck from './Deck'
-import { canBePlayed, placeCardOnDeck } from './gameLogic'
+import { canBePlayed, placeCardOnDeck } from '../../logic/gameLogic'
 import { useState } from 'react'
+import { useWebSocket } from './WebSocketContext'
 
-function Game(props: {state: GameState}) {
-    const [gameState, setGameState] = useState(props.state)
+function Game() {
+    const {gameState, playerIndex, sendPlayerAction} = useWebSocket();
     
-    
+    if (!gameState || playerIndex === null) {
+        return <div>Loading...</div>;
+    }
     return (
         <>
+            <p>{playerIndex}</p>
             <div>
                 {/* for each player in the game: */}
                 {gameState.players.map((player, idx) => {
@@ -21,18 +25,25 @@ function Game(props: {state: GameState}) {
                     // return a deck component
                     return <Deck 
                         cards={deck} 
-                        visible={idx === gameState.currentPlayerIndex} 
+                        visible={idx === playerIndex} 
                         onCardClick={
                             // callback function that accepts the card and its index in the deck.
                             (card: CardType, cardIndex: number) => {
+                                console.log(gameState);
                                 // if the card is a valid card to play
-                                if (idx === gameState.currentPlayerIndex && canBePlayed(card, gameState.currentColor, gameState.currentFace)) {
+                                if (idx === gameState.currentPlayerIndex && playerIndex === gameState.currentPlayerIndex && canBePlayed(card, gameState.currentColor, gameState.currentFace)) {
                                     // if it's a wild or +4, then prompt the user for the color
                                     if (card.color === "wild") {
                                         const desiredColor = prompt("what color do you want to play?");
-                                        setGameState(s => placeCardOnDeck(cardIndex, gameState, desiredColor as colorType));
+                                        if (desiredColor) {
+                                            sendPlayerAction({
+                                                type: 'PLAY_CARD',
+                                                cardIdx: cardIndex,
+                                                desiredColor: desiredColor as colorType,
+                                            });
+                                        }
                                     } else {
-                                        setGameState(s => placeCardOnDeck(cardIndex, gameState));
+                                        sendPlayerAction({ type: 'PLAY_CARD', cardIdx: cardIndex });
                                     }
                                     console.log("placed");
                                 } else {
@@ -50,10 +61,10 @@ function Game(props: {state: GameState}) {
             <Card card={gameState.discardPile.at(-1)!} visible={true} onClick={() => {console.log(gameState)}}></Card>
             <button onClick={
                 () => {
-                    if (gameState.players[gameState.currentPlayerIndex].hand.some(card => canBePlayed(card, gameState.currentColor, gameState.currentFace))) {
+                    if (gameState.players[gameState.currentPlayerIndex].hand.some(card => canBePlayed(card, gameState.currentColor, gameState.currentFace)) || playerIndex !== gameState.currentPlayerIndex) {
                         return;
                     }
-                    setGameState(s => drawCardProduce(s.currentPlayerIndex, s, 1))
+                    sendPlayerAction({ type: 'DRAW_CARD', amount: 1 });
                 }
             }>draw</button>
         </>

@@ -2,8 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import Card from './Card'
-import { canBePlayed, initializeGameState, placeCardOnDeck } from './gameLogic'
-import { CardType, DeckType, GameState } from './types'
+import { canBePlayed, initializeGameState, placeCardOnDeck } from '../../logic/gameLogic'
+import { CardType, DeckType, GameState } from '../../logic/types'
 
 const state = initializeGameState(4);
 

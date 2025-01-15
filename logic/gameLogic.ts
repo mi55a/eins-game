@@ -131,7 +131,6 @@ const handleAdd4 = (state: GameState) => {
  */
 const placeCardOnDeck = (cardIdx: number, state: GameState, desiredColor?: colorType): GameState => {
     return produce(state, (draftState) => {
-        console.log(draftState);
         const currIndex = draftState.currentPlayerIndex;
 
         const hand = draftState.players[currIndex].hand;
@@ -185,11 +184,6 @@ const placeCardOnDeck = (cardIdx: number, state: GameState, desiredColor?: color
 
 // besides placing cards on a deck, the state would also be altered by players drawing!! need to handle that
 const drawCard = (playerIdx: number, state: GameState, amount: number): void => {
-    // return produce(state, (draftState) => {
-    //     draftState.players[playerIdx].hand.push(...draftState.drawPile.splice(-1 * amount));
-    // })
-    
-
     for (let i = 0; i < amount; i++) {
         state.players[playerIdx].hand.push(...state.drawPile.splice(-1));
 
@@ -201,11 +195,11 @@ const drawCard = (playerIdx: number, state: GameState, amount: number): void => 
 
 const drawCardProduce = (playerIdx: number, state: GameState, amount: number): GameState => {
     return produce(state, (draftState) => {
-        draftState.players[playerIdx].hand.push(...draftState.drawPile.splice(-1 * amount));
+        drawCard(playerIdx, draftState, amount);
     })
 }
 
-export {initializeGameState, canBePlayed, placeCardOnDeck, drawCardProduce }
+export {initializeGameState, canBePlayed, placeCardOnDeck, drawCardProduce, drawCard, }
 
 
 
