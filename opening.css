@@ -1,21 +1,19 @@
 body {
-    background-color: pink;
+  background-color: pink;
 }
 .header-title {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: auto;
-    text-align: center;
-    text-wrap: wrap;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: auto;
+  text-align: center;
+  text-wrap: wrap;
 }
 button {
-    background-color: beige;
-    display: block;
-    margin: 0 auto;
-    margin-top: 50px;
-    /* height: 50px;
-    width: 100px; */
-    font-size: 2rem;
-    padding: 10px;
-    white-space: nowrap;
-    text-wrap: wrap;
+  background-color: beige;
+  display: block;
+  margin: 0 auto;
+  margin-top: 50px;
+  font-size: 2rem;
+  padding: 10px;
+  white-space: nowrap;
+  text-wrap: wrap;
 }

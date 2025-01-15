@@ -69,7 +69,6 @@ function randomCard(elementID) {
       const imagePath = cardImages[randomIndex].src;
       element.src = imagePath;
       localStorage.setItem(elementID, imagePath);
-      // element.setAttribute("data-loaded", "true");
     }
   } else if (element.tagName === "DIV") {
     const images = element.getElementsByTagName("img");
@@ -83,7 +82,6 @@ function randomCard(elementID) {
         const imagePath = cardImages[randomIndex].src;
         images[i].src = imagePath;
         localStorage.setItem(imageID, imagePath);
-        // images[i].setAttribute("data-loaded", "true");
       }
     }
   }
