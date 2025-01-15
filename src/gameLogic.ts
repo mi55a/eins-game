@@ -99,6 +99,25 @@ const canBePlayed = (newCard: CardType, color: colorType, face: faceType): boole
     return false;
 }
 
+const handleSkip = (state: GameState) => {
+    state.currentPlayerIndex += 2 * state.direction;
+}
+
+const handleReverse = (state: GameState) => {
+    state.direction *= -1;
+    state.currentPlayerIndex += state.direction;
+}
+
+const handleAdd2 = (state: GameState) => {
+    drawCard((state.currentPlayerIndex + state.direction + state.players.length) % state.players.length, state, 2);
+    state.currentPlayerIndex += 2 * state.direction;
+}
+
+const handleAdd4 = (state: GameState) => {
+    drawCard((state.currentPlayerIndex + state.direction + state.players.length) % state.players.length, state, 4);
+    state.currentPlayerIndex += 2 * state.direction;
+}
+
 /**
  * Play a card on top of the current state. If the card can be played, add it to
  * the discard pile and update the current color and face accordingly. If the
@@ -113,20 +132,44 @@ const canBePlayed = (newCard: CardType, color: colorType, face: faceType): boole
 const placeCardOnDeck = (cardIdx: number, state: GameState, desiredColor?: colorType): GameState => {
     return produce(state, (draftState) => {
         console.log(draftState);
-        const hand = draftState.players[draftState.currentPlayerIndex].hand;
+        const currIndex = draftState.currentPlayerIndex;
+
+        const hand = draftState.players[currIndex].hand;
         const newCard = hand[cardIdx];
         hand.splice(cardIdx, 1);
 
+        
+        // push to the top of the pile
         draftState.discardPile.push(newCard);
 
-        draftState.currentPlayerIndex += draftState.direction;
-
-        if (draftState.currentPlayerIndex < 0) {
-            draftState.currentPlayerIndex += draftState.players.length;
-        } else if (draftState.currentPlayerIndex >= draftState.players.length) {
-            draftState.currentPlayerIndex -= draftState.players.length;
+        // this is where card handling should go
+        if (newCard.face === "skip") {
+            handleSkip(draftState)
+        } else if (newCard.face === "reverse") {
+            handleReverse(draftState);
+        } else if (newCard.face === "add_2") {
+            handleAdd2(draftState);
+        } else if (newCard.face === "add_4") {
+            handleAdd4(draftState);
+        } else {
+            draftState.currentPlayerIndex += draftState.direction;
         }
 
+        draftState.currentPlayerIndex += draftState.players.length;
+        draftState.currentPlayerIndex %= draftState.players.length;
+
+        // if the player empties their hand
+        if (hand.length === 0) {
+            // remove the player
+            draftState.players.splice(currIndex, 1);
+            
+            // adjust index
+            if (draftState.currentPlayerIndex > currIndex) {
+                draftState.currentPlayerIndex -= 1;
+            }
+        }
+
+        // don't allow playing a wild card without telling what color you want
         if (newCard.color === "wild") {
             if (!desiredColor) {
                 throw new Error("If playing a wild color, desired color must be supplied");
@@ -137,18 +180,32 @@ const placeCardOnDeck = (cardIdx: number, state: GameState, desiredColor?: color
         }
 
         draftState.currentFace = newCard.face;
-
-        console.log(draftState.currentPlayerIndex)
     })
 };
 
-const numPlayers = 4;
-const gameState = initializeGameState(numPlayers);
+// besides placing cards on a deck, the state would also be altered by players drawing!! need to handle that
+const drawCard = (playerIdx: number, state: GameState, amount: number): void => {
+    // return produce(state, (draftState) => {
+    //     draftState.players[playerIdx].hand.push(...draftState.drawPile.splice(-1 * amount));
+    // })
+    
 
-// get basic UI done first where we can play the entire game by
-// taking turns on same computer - then move to websocket
+    for (let i = 0; i < amount; i++) {
+        state.players[playerIdx].hand.push(...state.drawPile.splice(-1));
 
-export {initializeGameState, canBePlayed, placeCardOnDeck, }
+        if (state.drawPile.length === 0) {
+            state.drawPile.push(..._.shuffle([...state.discardPile.splice(0, -1)]))
+        }
+    }
+}
+
+const drawCardProduce = (playerIdx: number, state: GameState, amount: number): GameState => {
+    return produce(state, (draftState) => {
+        draftState.players[playerIdx].hand.push(...draftState.drawPile.splice(-1 * amount));
+    })
+}
+
+export {initializeGameState, canBePlayed, placeCardOnDeck, drawCardProduce }
 
 
 

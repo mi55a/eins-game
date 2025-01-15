@@ -2,27 +2,11 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import Card from './Card'
-import { initializeGameState } from './gameLogic'
+import { drawCardProduce, initializeGameState } from './gameLogic'
 import { CardType, colorType, DeckType, GameState } from './types'
 import Deck from './Deck'
 import { canBePlayed, placeCardOnDeck } from './gameLogic'
 import { useState } from 'react'
-
-
-// add interactivity, drill listeners down to the card
-
-// when card is clicked:
-//     if it's the current turn, and
-//     if the card can be played:
-//     play the card
-//     remove it from the deck
-//     otherwise, do nothing
-
-// // the state would be provided by whatever we pass in from the state component
-// // it should just be a function of the card i guess
-    // if (canBePlayed(card, state.currentColor, state.currentFace)) {
-    //     placeCardOnDeck(props.cards, idx, state);
-    // }
 
 function Game(props: {state: GameState}) {
     const [gameState, setGameState] = useState(props.state)
@@ -64,6 +48,14 @@ function Game(props: {state: GameState}) {
 
             {/* show the top of the discard pile */}
             <Card card={gameState.discardPile.at(-1)!} visible={true} onClick={() => {console.log(gameState)}}></Card>
+            <button onClick={
+                () => {
+                    if (gameState.players[gameState.currentPlayerIndex].hand.some(card => canBePlayed(card, gameState.currentColor, gameState.currentFace))) {
+                        return;
+                    }
+                    setGameState(s => drawCardProduce(s.currentPlayerIndex, s, 1))
+                }
+            }>draw</button>
         </>
     )
 
