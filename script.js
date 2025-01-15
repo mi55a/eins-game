@@ -96,7 +96,7 @@ document.getElementById('generate-cards').addEventListener('click', function() {
 const backButton = document.getElementById('back-button');
 
 backButton.addEventListener('click', function() {
-    history.back();
+    window.location.href = 'opening_screen.html';
 });
 
 
