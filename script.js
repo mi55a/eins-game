@@ -93,6 +93,12 @@ document.getElementById('generate-cards').addEventListener('click', function() {
     randomCard("four-images");
 });
 
+const backButton = document.getElementById('back-button');
+
+backButton.addEventListener('click', function() {
+    history.back();
+});
+
 
 
 
