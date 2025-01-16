@@ -83,3 +83,14 @@ button:focus-visible {
   justify-content: center;
   color: white;
 }
+.card-image {
+  height: 100px;
+  width: 60px;
+  border-radius: 5px;
+  border: solid white 2px;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
